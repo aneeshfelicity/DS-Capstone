@@ -180,100 +180,64 @@ TutorTask_28_Fall2025_SHAP_Credit_Scoring_Model_with_SHAP_for_Interpretability/
 ## Pipeline Workflow
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph data[" DATA PREPARATION "]
         direction TB
-        A1[German Credit Dataset<br/>1000 samples, 21 features]
-        A2[Preprocessing Pipeline<br/>One-hot encoding and standardization]
-        A3[Train/Test Split<br/>Stratified sampling]
-        A4[Class Distribution<br/>Imbalanced classes identified]
-        
-        A1 --> A2 --> A3 --> A4
+        A1[German Credit Dataset<br/>Preprocessing and stratified split]
     end
     
-    subgraph models[" MODEL TRAINING "]
+    subgraph baseline[" BASELINE MODELS "]
         direction TB
-        B1[Logistic Regression<br/>Performance benchmark]
-        B2[XGBoost Default<br/>Initial tree model]
-        B3[Performance Evaluation<br/>Establish baseline metrics]
-        
-        B1 --> B3
-        B2 --> B3
+        B1[Logistic Regression & XGBoost<br/>Establish performance benchmarks]
     end
     
-    subgraph optimization[" OPTIMIZATION "]
+    subgraph tuning[" HYPERPARAMETER OPTIMIZATION "]
         direction TB
-        C1[GridSearchCV Setup<br/>Comprehensive parameter grid]
-        C2[Cross-Validation<br/>Stratified K-fold validation]
-        C3[Best Configuration<br/>Data-driven selection]
-        
-        C1 --> C2 --> C3
+        C1[GridSearchCV with cross-validation<br/>Select best configuration]
     end
     
-    data --> models
-    models --> optimization
-    
-    subgraph balancing[" BALANCING & THRESHOLD "]
+    subgraph balance[" CLASS IMBALANCE & THRESHOLD "]
         direction TB
-        D1[Calculate Weights<br/>Based on class distribution]
-        D2[Apply to Model<br/>Adjust loss function]
-        D3[Define Business Costs<br/>False negative vs false positive]
-        D4[Optimal Threshold<br/>Minimize expected cost]
-        
-        D1 --> D2 --> D3 --> D4
+        D1[Apply class weights<br/>Optimize cost-based threshold]
     end
     
-    subgraph calibration[" CALIBRATION "]
+    subgraph calibration[" PROBABILITY CALIBRATION "]
         direction TB
-        E1[CalibratedClassifierCV<br/>Isotonic regression method]
-        E2[Cross-Validation<br/>Validate calibration quality]
-        E3[Calibrated Model<br/>Well-calibrated probabilities]
-        
-        E1 --> E2 --> E3
+        E1[Isotonic calibration<br/>Reliable probability estimates]
     end
     
-    subgraph explainability[" SHAP EXPLAINABILITY "]
+    subgraph shap[" SHAP EXPLAINABILITY "]
         direction TB
-        F1[TreeExplainer<br/>Initialize SHAP framework]
-        F2[Global Explanations<br/>Feature importance analysis]
-        F3[Local Explanations<br/>Individual decision breakdowns]
-        F4[Sensitivity Analysis<br/>What-if scenario testing]
-        
-        F1 --> F2
-        F1 --> F3
-        F1 --> F4
+        F1[Global & Local Explanations<br/>Sensitivity Analysis]
     end
-    
-    optimization --> balancing
-    balancing --> calibration
-    calibration --> explainability
     
     subgraph outputs[" PROJECT OUTPUTS "]
         direction TB
-        G1[Trained Models<br/>Saved in reports directory]
-        G2[Performance Metrics<br/>Confusion matrices and scores]
-        G3[Visualizations<br/>ROC curves and calibration plots]
-        G4[SHAP Analysis<br/>Explanation plots and insights]
-        G5[Documentation<br/>Analysis and implications]
+        G1[Models, Metrics & Visualizations<br/>SHAP Analysis & Documentation]
     end
     
-    explainability --> outputs
+    data --> baseline
+    baseline --> tuning
+    tuning --> balance
+    balance --> calibration
+    calibration --> shap
+    shap --> outputs
     
     classDef dataStyle fill:#e1f5ff,stroke:#0288d1,stroke-width:2px,color:#000
-    classDef modelStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    classDef optimStyle fill:#ffecb3,stroke:#ffa726,stroke-width:2px,color:#000
+    classDef baselineStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    classDef tuningStyle fill:#ffecb3,stroke:#ffa726,stroke-width:2px,color:#000
     classDef balanceStyle fill:#c8e6c9,stroke:#66bb6a,stroke-width:2px,color:#000
-    classDef calibStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:2px,color:#000
+    classDef calibrationStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:2px,color:#000
     classDef shapStyle fill:#f3e5f5,stroke:#ab47bc,stroke-width:2px,color:#000
     classDef outputStyle fill:#c5cae9,stroke:#5c6bc0,stroke-width:2px,color:#000
     
-    class A1,A2,A3,A4 dataStyle
-    class B1,B2,B3 modelStyle
-    class C1,C2,C3 optimStyle
-    class D1,D2,D3,D4 balanceStyle
-    class E1,E2,E3 calibStyle
-    class F1,F2,F3,F4 shapStyle
-    class G1,G2,G3,G4,G5 outputStyle
+    class A1 dataStyle
+    class B1 baselineStyle
+    class C1 tuningStyle
+    class D1 balanceStyle
+    class E1 calibrationStyle
+    class F1 shapStyle
+    class G1 outputStyle
 ```
 
 ---
