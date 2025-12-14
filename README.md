@@ -180,7 +180,7 @@ TutorTask_28_Fall2025_SHAP_Credit_Scoring_Model_with_SHAP_for_Interpretability/
 ## Pipeline Workflow
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph data[" DATA PREPARATION "]
         direction TB
         A1[German Credit Dataset<br/>1000 samples, 21 features]
@@ -191,7 +191,7 @@ flowchart TB
         A1 --> A2 --> A3 --> A4
     end
     
-    subgraph baseline[" BASELINE MODELS "]
+    subgraph models[" MODEL TRAINING "]
         direction TB
         B1[Logistic Regression<br/>Performance benchmark]
         B2[XGBoost Default<br/>Initial tree model]
@@ -201,96 +201,79 @@ flowchart TB
         B2 --> B3
     end
     
-    subgraph tuning[" HYPERPARAMETER OPTIMIZATION "]
+    subgraph optimization[" OPTIMIZATION "]
         direction TB
         C1[GridSearchCV Setup<br/>Comprehensive parameter grid]
         C2[Cross-Validation<br/>Stratified K-fold validation]
         C3[Best Configuration<br/>Data-driven selection]
-        C4[Tuned Model<br/>Optimized performance]
         
-        C1 --> C2 --> C3 --> C4
+        C1 --> C2 --> C3
     end
     
-    subgraph balance[" CLASS IMBALANCE HANDLING "]
+    data --> models
+    models --> optimization
+    
+    subgraph balancing[" BALANCING & THRESHOLD "]
         direction TB
         D1[Calculate Weights<br/>Based on class distribution]
         D2[Apply to Model<br/>Adjust loss function]
-        D3[Balanced Model<br/>Improved minority class recall]
-        D4[Trade-off Analysis<br/>Evaluate error distribution]
+        D3[Define Business Costs<br/>False negative vs false positive]
+        D4[Optimal Threshold<br/>Minimize expected cost]
         
         D1 --> D2 --> D3 --> D4
     end
     
-    subgraph threshold[" COST-BASED THRESHOLD "]
+    subgraph calibration[" CALIBRATION "]
         direction TB
-        E1[Define Business Costs<br/>False negative vs false positive]
-        E2[Sweep Thresholds<br/>Optimize decision boundary]
-        E3[Optimal Threshold<br/>Minimize expected cost]
-        E4[Business-Aligned Model<br/>Cost-aware predictions]
+        E1[CalibratedClassifierCV<br/>Isotonic regression method]
+        E2[Cross-Validation<br/>Validate calibration quality]
+        E3[Calibrated Model<br/>Well-calibrated probabilities]
         
-        E1 --> E2 --> E3 --> E4
+        E1 --> E2 --> E3
     end
     
-    subgraph calibration[" PROBABILITY CALIBRATION "]
+    subgraph explainability[" SHAP EXPLAINABILITY "]
         direction TB
-        F1[CalibratedClassifierCV<br/>Isotonic regression method]
-        F2[Cross-Validation<br/>Validate calibration quality]
-        F3[Improved Reliability<br/>Well-calibrated probabilities]
-        F4[Production Ready<br/>Trustworthy risk estimates]
+        F1[TreeExplainer<br/>Initialize SHAP framework]
+        F2[Global Explanations<br/>Feature importance analysis]
+        F3[Local Explanations<br/>Individual decision breakdowns]
+        F4[Sensitivity Analysis<br/>What-if scenario testing]
         
-        F1 --> F2 --> F3 --> F4
+        F1 --> F2
+        F1 --> F3
+        F1 --> F4
     end
     
-    subgraph shap[" EXPLAINABILITY WITH SHAP "]
+    optimization --> balancing
+    balancing --> calibration
+    calibration --> explainability
+    
+    subgraph outputs[" PROJECT OUTPUTS "]
         direction TB
-        G1[TreeExplainer<br/>Initialize SHAP framework]
-        G2[Global Explanations<br/>Feature importance analysis]
-        G3[Local Explanations<br/>Individual decision breakdowns]
-        G4[Sensitivity Analysis<br/>What-if scenario testing]
-        
-        G1 --> G2
-        G1 --> G3
-        G1 --> G4
+        G1[Trained Models<br/>Saved in reports directory]
+        G2[Performance Metrics<br/>Confusion matrices and scores]
+        G3[Visualizations<br/>ROC curves and calibration plots]
+        G4[SHAP Analysis<br/>Explanation plots and insights]
+        G5[Documentation<br/>Analysis and implications]
     end
     
-    subgraph output[" DEPLOYMENT OUTPUTS "]
-        direction TB
-        H1[Calibrated Probabilities<br/>For pricing and capital planning]
-        H2[Optimal Threshold<br/>Business-driven decision boundary]
-        H3[SHAP Explanations<br/>Reason codes and audit trails]
-        H4[Monitoring Framework<br/>Performance tracking ready]
-        
-        H1 -.-> H5[Production<br/>Deployment]
-        H2 -.-> H5
-        H3 -.-> H5
-        H4 -.-> H5
-    end
-    
-    data --> baseline
-    baseline --> tuning
-    tuning --> balance
-    balance --> threshold
-    threshold --> calibration
-    calibration --> shap
-    shap --> output
+    explainability --> outputs
     
     classDef dataStyle fill:#e1f5ff,stroke:#0288d1,stroke-width:2px,color:#000
-    classDef baselineStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    classDef tuningStyle fill:#ffecb3,stroke:#ffa726,stroke-width:2px,color:#000
+    classDef modelStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+    classDef optimStyle fill:#ffecb3,stroke:#ffa726,stroke-width:2px,color:#000
     classDef balanceStyle fill:#c8e6c9,stroke:#66bb6a,stroke-width:2px,color:#000
-    classDef thresholdStyle fill:#ffccbc,stroke:#ef5350,stroke-width:2px,color:#000
-    classDef calibrationStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:2px,color:#000
+    classDef calibStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:2px,color:#000
     classDef shapStyle fill:#f3e5f5,stroke:#ab47bc,stroke-width:2px,color:#000
     classDef outputStyle fill:#c5cae9,stroke:#5c6bc0,stroke-width:2px,color:#000
     
     class A1,A2,A3,A4 dataStyle
-    class B1,B2,B3 baselineStyle
-    class C1,C2,C3,C4 tuningStyle
+    class B1,B2,B3 modelStyle
+    class C1,C2,C3 optimStyle
     class D1,D2,D3,D4 balanceStyle
-    class E1,E2,E3,E4 thresholdStyle
-    class F1,F2,F3,F4 calibrationStyle
-    class G1,G2,G3,G4 shapStyle
-    class H1,H2,H3,H4,H5 outputStyle
+    class E1,E2,E3 calibStyle
+    class F1,F2,F3,F4 shapStyle
+    class G1,G2,G3,G4,G5 outputStyle
 ```
 
 ---
