@@ -223,13 +223,13 @@ flowchart TB
     calibration --> shap
     shap --> outputs
     
-    classDef dataStyle fill:#e1f5ff,stroke:#0288d1,stroke-width:2px,color:#000
-    classDef baselineStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
-    classDef tuningStyle fill:#ffecb3,stroke:#ffa726,stroke-width:2px,color:#000
-    classDef balanceStyle fill:#c8e6c9,stroke:#66bb6a,stroke-width:2px,color:#000
-    classDef calibrationStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:2px,color:#000
-    classDef shapStyle fill:#f3e5f5,stroke:#ab47bc,stroke-width:2px,color:#000
-    classDef outputStyle fill:#c5cae9,stroke:#5c6bc0,stroke-width:2px,color:#000
+    classDef dataStyle fill:#e1f5ff,stroke:#0288d1,stroke-width:4px,color:#000
+    classDef baselineStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:4px,color:#000
+    classDef tuningStyle fill:#ffecb3,stroke:#ffa726,stroke-width:4px,color:#000
+    classDef balanceStyle fill:#c8e6c9,stroke:#66bb6a,stroke-width:4px,color:#000
+    classDef calibrationStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:4px,color:#000
+    classDef shapStyle fill:#f3e5f5,stroke:#ab47bc,stroke-width:4px,color:#000
+    classDef outputStyle fill:#c5cae9,stroke:#5c6bc0,stroke-width:4px,color:#000
     
     class A1 dataStyle
     class B1 baselineStyle
