@@ -1,11 +1,5 @@
 # Credit Scoring Model with SHAP for Interpretability
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Jupyter](https://img.shields.io/badge/jupyter-notebook-orange.svg)](https://jupyter.org/)
-[![XGBoost](https://img.shields.io/badge/XGBoost-1.7%2B-red.svg)](https://xgboost.readthedocs.io/)
-[![SHAP](https://img.shields.io/badge/SHAP-0.41%2B-yellow.svg)](https://shap.readthedocs.io/)
-
 **Author**: Aneesh Chepuri  
 **Course**: MSML610 — Fall 2025  
 **Project Type**: Credit Risk Modeling with Explainable AI
