@@ -99,35 +99,30 @@ This project builds an end-to-end credit scoring model on the German Credit data
 
 ## Setup Instructions (Docker)
 
-Docker setup provides a consistent environment across all platforms and is the **recommended approach** for this project.
+Docker provides a fully reproducible environment with all dependencies pre-installed and is the recommended way to run this project.
 
-1. **Install Docker Desktop** for your operating system from [docker.com](https://www.docker.com/products/docker-desktop/).
+### 1. Install Docker
+Install Docker Desktop from: https://www.docker.com/products/docker-desktop/  
+Verify installation: `docker --version`
 
-2. **Navigate to the project directory**:
-   ```bash
-   cd ~/umd_classes/class_project/MSML610/Fall2025/Projects/TutorTask_28_Fall2025_SHAP_Credit_Scoring_Model_with_SHAP_for_Interpretability
-   ```
+### 2. Navigate to the Project Directory
+`cd ~/umd_classes/class_project/MSML610/Fall2025/Projects/TutorTask_28_Fall2025_SHAP_Credit_Scoring_Model_with_SHAP_for_Interpretability`
 
-3. **Build the Docker Image**:
-   ```bash
-   chmod +x docker_*.sh
-   ./docker_build.sh
-   ```
+### 3. Build the Docker Image
+`docker build -t final_project_shap_credit_image .`  
+The first build may take 10–20 minutes due to scientific Python packages. Subsequent builds are faster.
 
-4. **Start the Container and Jupyter Notebook Server**:
-   ```bash
-   ./docker_bash.sh
-   ```
-   - This starts a container, mounts the current project as `/workspace`, and launches Jupyter
-   - The Jupyter notebook server automatically loads for immediate access
+### 4. Start the Container and Launch Jupyter
+Run:
+`docker run --rm -p 8888:8888 -v $(pwd):/workspace final_project_shap_credit_image`
 
-5. **Open Jupyter in your browser**:
-   ```
-   http://localhost:8888
-   ```
-   - You should see `SHAP_Credit.API.ipynb`, `shap_example.ipynb`, and the `credit_scoring_shap/` package
-   - Start with `SHAP_Credit.API.ipynb` to learn the APIs
-   - Run `shap_example.ipynb` for the complete pipeline
+### 5. Open Jupyter Notebook
+Go to: http://localhost:8888
+
+You should see:
+- SHAP_Credit.API.ipynb (API-focused tutorial)
+- shap_example.ipynb (end-to-end project notebook)
+- credit_scoring_shap/ (reusable project package)
 
 ---
 
@@ -181,63 +176,96 @@ TutorTask_28_Fall2025_SHAP_Credit_Scoring_Model_with_SHAP_for_Interpretability/
 
 ```mermaid
 flowchart TB
-    subgraph data[" DATA PREPARATION "]
-        direction TB
-        A1[German Credit Dataset<br/>Preprocessing and stratified split]
-    end
-    
-    subgraph baseline[" BASELINE MODELS "]
-        direction TB
-        B1[Logistic Regression & XGBoost<br/>Establish performance benchmarks]
-    end
-    
-    subgraph tuning[" HYPERPARAMETER OPTIMIZATION "]
-        direction TB
-        C1[GridSearchCV with cross-validation<br/>Select best configuration]
-    end
-    
-    subgraph balance[" CLASS IMBALANCE & THRESHOLD "]
-        direction TB
-        D1[Apply class weights<br/>Optimize cost-based threshold]
-    end
-    
-    subgraph calibration[" PROBABILITY CALIBRATION "]
-        direction TB
-        E1[Isotonic calibration<br/>Reliable probability estimates]
-    end
-    
-    subgraph shap[" SHAP EXPLAINABILITY "]
-        direction TB
-        F1[Global & Local Explanations<br/>Sensitivity Analysis]
-    end
-    
-    subgraph outputs[" PROJECT OUTPUTS "]
-        direction TB
-        G1[Models, Metrics & Visualizations<br/>SHAP Analysis & Documentation]
-    end
-    
-    data --> baseline
-    baseline --> tuning
-    tuning --> balance
-    balance --> calibration
-    calibration --> shap
-    shap --> outputs
-    
-    classDef dataStyle fill:#e1f5ff,stroke:#0288d1,stroke-width:40px,color:#000
-    classDef baselineStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:40px,color:#000
-    classDef tuningStyle fill:#ffecb3,stroke:#ffa726,stroke-width:40px,color:#000
-    classDef balanceStyle fill:#c8e6c9,stroke:#66bb6a,stroke-width:40px,color:#000
-    classDef calibrationStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:40px,color:#000
-    classDef shapStyle fill:#f3e5f5,stroke:#ab47bc,stroke-width:40px,color:#000
-    classDef outputStyle fill:#c5cae9,stroke:#5c6bc0,stroke-width:40px,color:#000
-    
-    class A1 dataStyle
-    class B1 baselineStyle
-    class C1 tuningStyle
-    class D1 balanceStyle
-    class E1 calibrationStyle
-    class F1 shapStyle
-    class G1 outputStyle
+
+%% =========================
+%% DATA PREPARATION
+%% =========================
+subgraph data["DATA PREPARATION"]
+    direction TB
+    A1["German Credit Dataset<br/>Cleaning, encoding,<br/>stratified train/test split"]
+end
+
+%% =========================
+%% BASELINE MODELS
+%% =========================
+subgraph baseline["BASELINE MODELS"]
+    direction TB
+    B1["Logistic Regression<br/>XGBoost<br/>Baseline performance metrics"]
+end
+
+%% =========================
+%% HYPERPARAMETER TUNING
+%% =========================
+subgraph tuning["HYPERPARAMETER OPTIMIZATION"]
+    direction TB
+    C1["GridSearchCV<br/>Cross-validation<br/>Best model selection"]
+end
+
+%% =========================
+%% CLASS IMBALANCE
+%% =========================
+subgraph balance["CLASS IMBALANCE & THRESHOLD"]
+    direction TB
+    D1["Class weighting<br/>Cost-sensitive threshold<br/>optimization"]
+end
+
+%% =========================
+%% CALIBRATION
+%% =========================
+subgraph calibration["PROBABILITY CALIBRATION"]
+    direction TB
+    E1["Isotonic regression<br/>Well-calibrated<br/>probability estimates"]
+end
+
+%% =========================
+%% SHAP
+%% =========================
+subgraph shap["SHAP EXPLAINABILITY"]
+    direction TB
+    F1["Global feature importance<br/>Local explanations<br/>Sensitivity analysis"]
+end
+
+%% =========================
+%% OUTPUTS
+%% =========================
+subgraph outputs["PROJECT OUTPUTS"]
+    direction TB
+    G1["Trained models<br/>Evaluation metrics<br/>SHAP visualizations<br/>Documentation"]
+end
+
+%% FLOW
+data --> baseline --> tuning --> balance --> calibration --> shap --> outputs
+
+%% =========================
+%% STYLES
+%% =========================
+classDef dataStyle fill:#e1f5ff,stroke:#0288d1,stroke-width:2px,color:#000
+classDef baselineStyle fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#000
+classDef tuningStyle fill:#ffecb3,stroke:#ffa726,stroke-width:2px,color:#000
+classDef balanceStyle fill:#c8e6c9,stroke:#66bb6a,stroke-width:2px,color:#000
+classDef calibrationStyle fill:#b2dfdb,stroke:#26a69a,stroke-width:2px,color:#000
+classDef shapStyle fill:#f3e5f5,stroke:#ab47bc,stroke-width:2px,color:#000
+classDef outputStyle fill:#c5cae9,stroke:#5c6bc0,stroke-width:2px,color:#000
+
+class A1 dataStyle
+class B1 baselineStyle
+class C1 tuningStyle
+class D1 balanceStyle
+class E1 calibrationStyle
+class F1 shapStyle
+class G1 outputStyle
+
+%% =========================
+%% SIZE CONTROL (CRITICAL)
+%% =========================
+style A1 min-width:360px,padding:12px
+style B1 min-width:360px,padding:12px
+style C1 min-width:380px,padding:12px
+style D1 min-width:360px,padding:12px
+style E1 min-width:360px,padding:12px
+style F1 min-width:360px,padding:12px
+style G1 min-width:380px,padding:12px
+
 ```
 
 ---
@@ -415,7 +443,8 @@ sudo kill -9 <PID>
 ```
 
 ### Module Not Found Error
-Ensure you are running inside the Docker container started by `docker_bash.sh`. The container should have `/workspace` mounted to the current project directory.
+Ensure you are running inside the Docker container started with the docker run command.
+Inside the container, the project directory is mounted at: /workspace
 
 ### Dataset Download Issues
 The dataset is automatically fetched from UCI repository via `ucimlrepo`. If download fails:
