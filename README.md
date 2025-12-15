@@ -100,16 +100,25 @@ Install Docker Desktop from: https://www.docker.com/products/docker-desktop/
 Verify installation: `docker --version`
 
 ### 2. Navigate to the Project Directory
+```bash
 `cd ~/umd_classes/class_project/MSML610/Fall2025/Projects/TutorTask_28_Fall2025_SHAP_Credit_Scoring_Model_with_SHAP_for_Interpretability`
-
+```
 ### 3. Build the Docker Image
-`docker build -t final_project_shap_credit_image .`  
+```bash
+`docker build -t final_project_shap_credit_image .`
+```  
 The first build may take 10–20 minutes due to scientific Python packages. Subsequent builds are faster.
 
 ### 4. Start the Container and Launch Jupyter
 Run:
-`docker run --rm -p 8888:8888 -v $(pwd):/workspace final_project_shap_credit_image`
-
+```bash
+`docker run --rm \
+-p 8888:8888 \
+-v $(pwd):/workspace \
+-e PORT=8888 \
+final_project_shap_credit_image \
+bash /workspace/run_jupyter.sh`
+```
 ### 5. Open Jupyter Notebook
 Go to: http://localhost:8888
 
