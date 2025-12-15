@@ -2,7 +2,6 @@
 
 **Author**: Aneesh Chepuri  
 **Course**: MSML610 — Fall 2025  
-**Project Type**: Credit Risk Modeling with Explainable AI
 
 ---
 
@@ -387,7 +386,7 @@ The complete end-to-end pipeline:
 - Advanced model evaluation beyond simple accuracy metrics
 - Probability calibration methods for reliable predictions
 
-### Explainable AI Techniques
+### shap Techniques
 - SHAP value theory and practical implementation
 - Difference between global and local explanations
 - Interpreting decision plots and waterfall charts
