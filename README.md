@@ -266,68 +266,42 @@ style G1 min-width:380px,padding:12px
 
 ## How It Works
 
-The pipeline operates through a comprehensive multi-step process organized into seven major sections:
+The pipeline follows a seven-stage workflow from raw data to interpretable, cost-sensitive credit risk predictions.
 
 ### 1. Data Preparation
-- Loads German Credit dataset from UCI repository using `ucimlrepo`
-- Handles missing values and data quality issues
-- Applies one-hot encoding to categorical features
-- Standardizes numerical features for model compatibility
-- Creates stratified train/test splits maintaining class distribution
+- Load the German Credit dataset with `ucimlrepo`
+- Clean data, encode categoricals, standardize numerics
+- Create stratified train/test splits to preserve class balance
 
 ### 2. Baseline Model Training
-- Trains Logistic Regression as performance benchmark
-- Trains XGBoost with default parameters for comparison
-- Evaluates both models using multiple metrics
-- Generates diagnostic visualizations (confusion matrices, ROC curves)
-- Establishes baseline performance for improvement measurement
+- Train Logistic Regression and XGBoost with default settings
+- Evaluate using standard metrics and basic diagnostic plots
+- Use results as a baseline for later improvements
 
 ### 3. Hyperparameter Optimization
-- Defines comprehensive parameter grid covering key hyperparameters
-- Performs stratified cross-validated grid search
-- Evaluates all configurations systematically
-- Selects best configuration based on validation performance
-- Tests optimized model on held-out test set
+- Define a grid over key model hyperparameters
+- Run stratified cross-validated GridSearchCV
+- Select and test the best configuration on the held-out test set
 
 ### 4. Class Imbalance Handling
-- Analyzes class distribution in training data
-- Calculates appropriate class weights
-- Trains balanced model with adjusted sample weights
-- Evaluates impact on minority class detection
-- Analyzes trade-offs between precision and recall
+- Inspect class distribution and compute class weights
+- Train cost-sensitive models with weights/sample weights
+- Analyze precision–recall trade-offs, especially for the minority class
 
 ### 5. Cost-Based Threshold Optimization
-- Defines business costs for different error types
-- Sweeps through possible decision thresholds
-- Calculates expected cost at each threshold
-- Selects threshold minimizing total business cost
-- Evaluates resulting error distribution
+- Define business costs for false positives/negatives
+- Sweep decision thresholds and compute expected cost
+- Choose the threshold that minimizes total business cost
 
 ### 6. Probability Calibration
-- Applies isotonic calibration method
-- Performs cross-validated calibration
-- Validates calibration quality using Brier score
-- Generates calibration plots for visual assessment
-- Ensures probabilities are reliable for downstream use
+- Calibrate predicted probabilities (isotonic regression)
+- Validate with Brier score and calibration plots
+- Ensure probabilities are suitable for downstream decisions
 
-### 7. SHAP Explainability and Sensitivity Analysis
-**Global Analysis**
-- Computes SHAP values across entire dataset
-- Identifies most important features driving predictions
-- Generates summary plots showing feature impact distribution
-- Creates dependence plots revealing feature interactions
-
-**Local Analysis**
-- Explains individual borrower decisions
-- Produces decision plots showing cumulative feature contributions
-- Maps SHAP values to human-readable reason codes
-- Supports adverse action notices for regulatory compliance
-
-**Sensitivity Analysis**
-- Identifies top features for selected borrowers
-- Varies features systematically while holding others constant
-- Plots prediction changes across feature ranges
-- Reveals actionable insights for borderline cases
+### 7. SHAP Explainability & Sensitivity Analysis
+- Compute SHAP values for global feature importance and interactions
+- Generate local explanations and decision plots for individual borrowers
+- Run sensitivity analysis by varying key features to see impact on risk
 
 ---
 
@@ -491,18 +465,3 @@ If encountering out-of-memory errors:
 - [ROC AUC Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html) - Model evaluation
 - [Confusion Matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) - Error analysis
 
----
-
-## License
-
-This project is licensed under the MIT License. See LICENSE file for details.
-
----
-
-## Acknowledgments
-
-- **Dataset**: UCI Machine Learning Repository for providing the German Credit dataset
-- **XGBoost**: Chen & Guestrin for the gradient boosting framework
-- **SHAP**: Lundberg & Lee for the explainability methodology
-- **Course**: MSML610 - Machine Learning, University of Maryland
-- **Instructor**: Professor GP Saggese for guidance and support
